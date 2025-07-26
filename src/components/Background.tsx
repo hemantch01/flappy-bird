@@ -3,10 +3,10 @@ export type setReact = {
     birdPos:number,
     setBirdPos:React.Dispatch<React.SetStateAction<number>>
 }
-export const Background = (props:setReact)=>{
+export const Background = ({birdPos,setBirdPos}:setReact)=>{
     return <div className="flex justify-center h-[800px] w-[600px] mx-auto my-4 border-4 rounded-md" onClick={()=>{
-       if(props.birdPos>100){
-        props.setBirdPos((pos)=>pos-80);
+       if(birdPos>100){
+        setBirdPos((pos)=>pos-80);
        }
     }}>
        <img src={img} alt="Background" className="w-[600px]" />
