@@ -1,6 +1,14 @@
 import img from "../assets/background-day.png"
-export const Background = ()=>{
-    return <div className=" my-4 flex justify-center w-full h-[800px]">
-       <img src={img} alt="Background" />
+export type setReact = {
+    birdPos:number,
+    setBirdPos:React.Dispatch<React.SetStateAction<number>>
+}
+export const Background = (props:setReact)=>{
+    return <div className="flex justify-center h-[800px] w-[600px] mx-auto my-4 border-4 rounded-md" onClick={()=>{
+       if(props.birdPos>100){
+        props.setBirdPos((pos)=>pos-80);
+       }
+    }}>
+       <img src={img} alt="Background" className="w-[600px]" />
     </div>
 }

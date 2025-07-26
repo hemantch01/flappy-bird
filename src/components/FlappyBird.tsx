@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import img from "../assets/yellowbird-upflap.png";
+import type { setReact } from "./Background";
 
-export const FlappyBird = () => {
-  const [BirdPos, setBirdPos] = useState(300);
-
+export const FlappyBird = (props:setReact) => {
   useEffect(() => {
     const groundLevel = 780;  
     const interval = setInterval(() => {
-      setBirdPos((pos) => {
+      props.setBirdPos((pos) => {
         if (pos < groundLevel) {
           return pos + 10;
         } else {
             return groundLevel;
         }
       });
-    }, 15); // Adjust speed as needed
+    }, 50); // Adjust speed as needed
 
     return () => clearInterval(interval);
   }, []);
@@ -22,7 +21,7 @@ export const FlappyBird = () => {
   return (
     <div
       className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-      style={{ top: `${BirdPos}px` }}
+      style={{ top: `${props.birdPos}px` }}
     >
       <img src={img} className="w-18 h-12" alt="bird" />
     </div>
