@@ -4,7 +4,7 @@ export type setReact = {
     setBirdPos:React.Dispatch<React.SetStateAction<number>>
 }
 export const Background = ({birdPos,setBirdPos}:setReact)=>{
-    return <div className="flex justify-center h-[800px] w-[600px] mx-auto my-4 border-4 rounded-md" onClick={()=>{
+    return <div className="flex justify-center h-[1000px] w-[600px] mx-auto  border-4 rounded-md" onClick={()=>{
        if(birdPos>100){
         setBirdPos((pos)=>pos-80);
        }
