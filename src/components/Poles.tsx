@@ -1,68 +1,62 @@
-import React, { useEffect } from "react";
-import pole from "../assets/pipe-green.png";
+import { useEffect } from "react"
+import pole from "../assets/pipe-green.png"
 
 type PolesType = {
-    rotation: number;
-    height: number;
-    top: number;
-    isStart: boolean;
-    newHeight?: number;
-    setNewHeight?: React.Dispatch<React.SetStateAction<number>>;
-    newLoc?: number;
-    setNewLoc?: React.Dispatch<React.SetStateAction<number>>;
-};
+  rotation: number
+  height: number
+  top: number
+  isStart: boolean
+  newHeight?: number
+  setNewHeight?: React.Dispatch<React.SetStateAction<number>>
+  newLoc?: number
+  setNewLoc?: React.Dispatch<React.SetStateAction<number>>
+}
 
 export const Poles = ({
-    rotation,
-    isStart,
-    height,
-    top,
-    newHeight,
-    setNewHeight,
-    newLoc,
-    setNewLoc,
+  rotation,
+  isStart,
+  height,
+  top,
+  newHeight,
+  setNewHeight,
+  newLoc,
+  setNewLoc,
 }: PolesType) => {
-    // Set initial random height only once when game starts
-    useEffect(() => {
-        if (!isStart) return;
-        if (setNewHeight) {
-            setNewHeight(() => Math.floor(Math.random() * height));
+  useEffect(() => {
+    if (!isStart || !setNewLoc || !setNewHeight) return
+
+    const containerWidth = 600
+    const pipeWidth = 100
+
+    const interval = setInterval(() => {
+      setNewLoc((prev) => {
+        // When pipe completely leaves left side → reset
+        if (prev > containerWidth + pipeWidth) {
+          setNewHeight(Math.floor(Math.random() * height))
+          return -pipeWidth
         }
-    }, [isStart, setNewHeight, height]);
+        return prev + 5
+      })
+    }, 50)
 
-    // Handle movement (interval)
-    useEffect(() => {
-        if (!isStart || !setNewLoc || !setNewHeight) return;
+    return () => clearInterval(interval)
+  }, [isStart, setNewLoc, setNewHeight, height])
 
-        const interval = setInterval(() => {
-            setNewLoc((prevLoc) => {
-                // When offscreen, reset position and height
-                if (prevLoc > 1000) {
-                    setNewHeight(Math.floor(Math.random() * height));
-                    return 550; // Reset to right side
-                }
-                return prevLoc + 5; // Move right to left
-            });
-        }, 50);
-
-        return () => clearInterval(interval);
-    }, [isStart, setNewLoc, setNewHeight, height]);
-
-    return (
-        <div
-            className="absolute z-10"
-            style={{ top: `${top}px`, right: `${newLoc}px` }}
-        >
-            <img
-                src={pole}
-                alt="pipe"
-                className="w-[100px]"
-                style={{
-                    height: `${newHeight}px`,
-                    transform: `rotate(${rotation}deg)`,
-                    objectFit: "fill",
-                }}
-            />
-        </div>
-    );
-};
+  return (
+    <div
+      className="absolute z-10"
+      style={{ top: `${top}px`, right: `${newLoc}px` }}
+    >
+      <img
+        src={pole}
+        alt="pipe"
+        className="w-[100px]"
+        style={{
+          height: `${newHeight}px`,
+          transform: `rotate(${rotation}deg)`,
+          objectFit: "fill",
+        }}
+      />
+    </div>
+  )
+}
